@@ -38,4 +38,66 @@
  */
 export function iplPointsTable(matches) {
   // Your code here
+  const teams = [
+    // {team: "", played: 0, won: 0, lost: 0, tied: 0, noResult: 0, points: 0}
+  ]
+
+  if(!Array.isArray(matches) || matches.length === 0) return teams;
+
+  for(let match of matches){
+    console.log(match);
+    console.log(match.team1);
+    console.log(match.team2);
+
+    const team1 = match.team1;
+    const team2 = match.team2;
+
+    const team1Found = teams.find(t => t.team === match.team1);
+    if(team1Found){
+      team1Found.played += 1;
+    }else{
+      teams.push({team: match.team1, played: 1, won: 0, lost: 0, tied: 0, noResult: 0, points: 0});
+    }
+
+    const team2Found = teams.find(t => t.team === match.team2);
+    if(team2Found){
+      team2Found.played += 1;
+    }else{
+      teams.push({team: match.team2, played: 1, won: 0, lost: 0, tied: 0, noResult: 0, points: 0});
+    }
+
+    if (match.result === "win"){
+      teams.find(t => t.team === match.winner).won +=1;
+      teams.find(t => t.team === match.winner).points +=2;
+  
+      const loserTeam = match.winner !== match.team1? match.team1 : match.team2;
+      teams.find(t => t.team === loserTeam).lost +=1
+    }else if(match.result==="tie"){
+      teams.find(t => t.team === match.team1).tied +=1
+      teams.find(t => t.team === match.team1).points +=1
+      
+      teams.find(t => t.team === match.team2).tied +=1
+      teams.find(t => t.team === match.team2).points +=1
+    } else {
+      teams.find(t => t.team === match.team1).noResult +=1
+      teams.find(t => t.team === match.team1).points +=1
+      
+      teams.find(t => t.team === match.team2).noResult +=1
+      teams.find(t => t.team === match.team2).points +=1
+    }
+  }
+
+  return teams.sort((a,b) => {
+    if (b.points !== a.points){
+      return b.points - a.points;
+    }
+
+    return a.team.localeCompare(b.team)
+    
+  });
 }
+
+// iplPointsTable([
+//       { team1: "CSK", team2: "MI", result: "tie", winner: "CSK" },
+//       { team1: "RCB", team2: "CSK", result: "tie" },
+//     ])

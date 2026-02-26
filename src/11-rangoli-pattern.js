@@ -37,4 +37,38 @@
  */
 export function rangoli(n) {
   // Your code here
+
+  let opRangoli = [];
+  let opRangoliTrailing = [];
+
+  if (!Number.isInteger(n) || n<1) return opRangoli;
+  
+
+  for(let i=1; i<=n;i++){
+    
+    let star = "";
+    for (let j=1; j<=i; j++){
+        star += "*"
+        if (j < i) {  // Add space after star (except last star)
+          star += " ";
+        }
+    }
+    // " ".repeat(n-i)+star;
+    console.log(" ".repeat(n-i)+star);
+    opRangoli.push(" ".repeat(n-i)+star);
+    if(i<n){
+      opRangoliTrailing.unshift(" ".repeat(n-i)+star);
+    }
+    
+    // if(i<n){      
+    //   opRangoliTrailing.unshift(star);
+    //   console.log(" ".repeat(n-i)+star);
+    // }
+  }  
+
+  return opRangoli.concat(opRangoliTrailing);
 }
+
+let x = rangoli(3);
+
+console.log(x);

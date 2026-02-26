@@ -39,4 +39,66 @@
  */
 export function diwaliLightsPlan(lightStrings, budget) {
   // Your code here
+
+  let selectedLights = [];
+  let totalLength = 0;
+  let totalCost = 0;
+  let costEachItem = 0;
+
+  if(!Array.isArray(lightStrings) || lightStrings.length===0 || !Number.isInteger(budget)|| budget <= 0 ){
+    return {
+      selected: selectedLights,
+      totalLength: totalLength, 
+      totalCost: totalCost
+    };
+  }
+
+  const rates = [
+    { color: 'golden', price: 50 },
+    { color: 'multicolor', price: 40 },
+    { color: 'white', price: 30 },
+    { color: 'other', price: 35 }, 
+  ]
+  
+
+  for (const light of lightStrings){
+    
+    let rateObj = rates.find(r => r.color === light.color);
+
+    if (!rateObj){
+      rateObj = rates.find(r => r.color === 'other');
+    }
+
+    const costEachItem = light.length * rateObj.price ;
+
+    // costEachItem = light.length*rates.filter(rate => rate.color===light.color)[0].price;
+    if (totalCost + costEachItem>budget){
+      break;
+    }
+    selectedLights.push({...light, cost: costEachItem});
+    totalLength += light.length;
+    totalCost += costEachItem;
+  }
+
+  return {
+    selected: selectedLights,
+    totalLength: totalLength, 
+    totalCost: totalCost
+  };
 }
+
+// const x = diwaliLightsPlan(
+//  [{ color: "white", length: 5 }],
+//  200
+//  )
+
+//  console.log(x);
+
+// diwaliLightsPlan(
+//         [{ color: "white", length: 5 }],
+//         200
+//       )).toEqual({
+//         selected: [{ color: "white", length: 5, cost: 150 }],
+//         totalLength: 5,
+//         totalCost: 150
+//       })
